@@ -1,11 +1,8 @@
 package geek.example.rainicorn.views;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,25 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import geek.example.rainicorn.MainApplication;
+
 import geek.example.rainicorn.R;
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
+import geek.example.rainicorn.views.search.SearchFragment;
+
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    EditText editText;
-    TextView textView;
-    TextView textViewOb1;
-    TextView textViewOb2;
-    Button btnOb1;
-    Button btnOb2;
-    Button btnEventbus;
+        implements NavigationView.OnNavigationItemSelectedListener{
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,14 +28,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,96 +37,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        initGUI();
+
+        placeFragment(SearchFragment.class.getName());
+
     }
 
-    private void initGUI() {
-        editText = findViewById(R.id.edit_text);
-        textView = findViewById(R.id.text_view);
-        textViewOb1 = findViewById(R.id.text_view_observable1);
-        textViewOb2 = findViewById(R.id.text_view_observable2);
-        btnEventbus = findViewById(R.id.btn_eventbus);
-        btnOb1 = findViewById(R.id.btnobservable1);
-        btnOb2 = findViewById(R.id.btnobservable2);
-
-        editText.addTextChangedListener(new TextWatcher() {
-
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Observable.just(s)
-                        .subscribe(new Subscriber<CharSequence>() {
-                            @Override
-                            public void onCompleted() {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onNext(CharSequence charSequence) {
-                                textView.setText(String.valueOf(charSequence));
-                            }
-                        });
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        btnOb1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainApplication)getApplication())
-                        .getBus()
-                        .send(new String("btnOb1"));
-            }
-        });
-        btnOb2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainApplication)getApplication())
-                        .getBus()
-                        .send(new String("btnOb2"));
-
-            }
-        });
-        btnEventbus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainApplication)getApplication())
-                        .getBus()
-                        .send(new String("btnEventbus"));
-
-            }
-        });
-        ((MainApplication)getApplication())
-                .getBus()
-                .getEvents()
-                .subscribe(new Action1<Object>() {
-
-                    public void call(Object o) {
-
-                        if (o.equals("btnOb1")) {
-                            textViewOb1.setText("btnOb1");
-                        } else if (o.equals("btnOb2")) {
-                            textViewOb2.setText("btnOb2");
-                        } else if (o.equals("btnEventbus")) {
-                            textViewOb1.setText("btnEventbus");
-                            textViewOb2.setText("btnEventbus");
-                        }
-                    }
-                });
-    }
 
     @Override
     public void onBackPressed() {
@@ -205,4 +99,19 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    void placeFragment(String fragmentTag) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        Fragment fragment = Fragment.instantiate(this, fragmentTag, null);
+        transaction.setCustomAnimations(
+                android.R.anim.fade_in, android.R.anim.fade_out,
+                android.R.anim.fade_out, android.R.anim.fade_in);
+        transaction.replace(R.id.container_fragments, fragment, fragmentTag);
+
+        //transaction.addToBackStack(fragmentTag);
+
+        transaction.commit();
+    }
+
 }
