@@ -12,4 +12,5 @@ public interface OwnerView extends MvpView {
     void showError(Throwable e);
 
     void setOwnerPhotos(List<Photo> galleryItem);
+
 }

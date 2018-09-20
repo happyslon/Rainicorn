@@ -29,8 +29,8 @@ public class NetApiClient {
 
     public Flowable<GalleryItem> getGallery(){
         return netApi.getResponse(METHOD_RECENT,API_KEY,FORMAT,NOJSONCALLBACK,EXTRAS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
     public Flowable<Owner> getOwner(String user){
         return netApi.getOwnerGallery(METHOD_OWNER,API_KEY,user,FORMAT,NOJSONCALLBACK)

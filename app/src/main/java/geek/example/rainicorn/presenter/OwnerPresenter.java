@@ -11,25 +11,29 @@ import geek.example.rainicorn.data.rest.NetApiClient;
 
 @InjectViewState
 public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscriber<Owner> {
+    private String user;
     @Override
     public void attachView(OwnerView view) {
         super.attachView(view);
-//        loadDate();
+        loadDate();
     }
+//    public OwnerPresenter(String user){
+//        loadDate(user);
+//    }
 
-    private void loadDate(String user) {
+    private void loadDate() {
         NetApiClient.getInstance().getOwner(user)
                 .subscribe(this);
     }
 
     @Override
     public void onSubscribe(Subscription s) {
-
+        s.request(Long.MAX_VALUE);
     }
 
     @Override
     public void onNext(Owner owner) {
-
+        getViewState().setOwnerPhotos(owner.getPhotos().getPhoto());
     }
 
     @Override
@@ -40,5 +44,9 @@ public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscribe
     @Override
     public void onComplete() {
 
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
