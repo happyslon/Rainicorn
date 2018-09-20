@@ -14,12 +14,16 @@ import android.view.MenuItem;
 
 
 import geek.example.rainicorn.R;
+import geek.example.rainicorn.presenter.BasePresenter;
+import geek.example.rainicorn.utils.Constants;
+import geek.example.rainicorn.views.search.OwnerFragment;
 import geek.example.rainicorn.views.search.SearchFragment;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,BasePresenter {
 
+    Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        placeFragment(SearchFragment.class.getName());
+        placeFragment(SearchFragment.class.getName(),null);
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 
@@ -100,18 +113,25 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    void placeFragment(String fragmentTag) {
+    void placeFragment(String fragmentTag,Bundle args) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        Fragment fragment = Fragment.instantiate(this, fragmentTag, null);
+        fragment = Fragment.instantiate(this, fragmentTag, args);
         transaction.setCustomAnimations(
                 android.R.anim.fade_in, android.R.anim.fade_out,
                 android.R.anim.fade_out, android.R.anim.fade_in);
         transaction.replace(R.id.container_fragments, fragment, fragmentTag);
 
-        //transaction.addToBackStack(fragmentTag);
+        transaction.addToBackStack(SearchFragment.class.getName());
 
         transaction.commit();
     }
 
+    @Override
+    public void onDetailsGalleryOwner(String owner) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.OWNER_GALLERY,owner);
+        placeFragment(OwnerFragment.class.getName(),bundle);
+
+    }
 }
