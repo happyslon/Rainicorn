@@ -1,6 +1,5 @@
 package geek.example.rainicorn.data.models;
 
-import java.io.Serializable;
 
 import io.realm.RealmObject;
 
@@ -10,8 +9,6 @@ public class RealmModel extends RealmObject{
     private String owner;
     private String title;
     private String urlS;
-
-    public RealmModel(){}
 
 
     public String getOwner() {

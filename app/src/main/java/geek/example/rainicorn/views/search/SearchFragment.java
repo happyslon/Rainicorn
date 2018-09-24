@@ -96,12 +96,7 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
             Glide.with(getActivity())
                     .load(galleryItem.getUrlS())
                     .into(holder.itemImageView);
-            holder.itemImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callbackActivity.onDetailsGalleryOwner(galleryItem.getOwner());
-                }
-            });
+            holder.itemImageView.setOnClickListener(v -> callbackActivity.onDetailsGalleryOwner(galleryItem.getOwner()));
         }
 
         @Override
