@@ -104,6 +104,7 @@ public class SearchPresenter extends MvpPresenter<SearchView> implements Subscri
         getViewState().startLoad();
         NetApiClient.getInstance().getGallery()
                 .subscribe(this);
+
     }
 
 

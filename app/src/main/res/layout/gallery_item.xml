@@ -22,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:textSize="5sp"
-            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"/>
+            android:layout_marginHorizontal="@dimen/fragment_horizontal_margin"
+            android:lines="3"/>
     </LinearLayout>
 
 
