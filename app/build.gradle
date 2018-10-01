@@ -37,6 +37,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.3.0'
+    androidTestImplementation 'com.google.dagger:dagger-compiler:2.7'
     ///////////////////////////////////////////////////////////////////////////
     // Moxy
     implementation "com.arello-mobile:moxy:$moxy_ver"
@@ -64,4 +69,12 @@ dependencies {
     //////////////////////////////////////////////////////////////////////////
     implementation 'com.google.dagger:dagger:2.13'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+    //
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    //
+    implementation 'com.android.support:palette-v7:26.1.0'
+    //
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    //
+
 }

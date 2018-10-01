@@ -15,6 +15,8 @@ public interface SearchView extends MvpView {
 
     void showError(Throwable e);
 
-    void setPhotos(List<RealmModel> galleryItem);
+    void setPhotos(List<Photo> galleryItem);
+
+    void sendMessage(String s);
 
 }

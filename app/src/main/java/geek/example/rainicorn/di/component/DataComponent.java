@@ -6,5 +6,5 @@ import geek.example.rainicorn.presenter.SearchPresenter;
 
 @Component(modules = {DataModule.class})
 public interface DataComponent {
-    void dataComponent(SearchPresenter searchPresenter);
+    //void dataComponent(SearchPresenter searchPresenter);
 }
