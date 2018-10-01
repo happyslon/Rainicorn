@@ -35,7 +35,7 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
     BasePresenter callbackActivity;
 
     private RecyclerView photoRecyclerView;
-    private List<RealmModel> mItems = new ArrayList<>();
+    private List<Photo> mItems = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -74,9 +74,9 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
     }
 
     private class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
-        private List<RealmModel> mGalleryItems;
+        private List<Photo> mGalleryItems;
 
-        public PhotoAdapter(List<RealmModel> items) {
+        public PhotoAdapter(List<Photo> items) {
             mGalleryItems = items;
         }
 
@@ -91,12 +91,29 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
 
         @Override
         public void onBindViewHolder(@NonNull PhotoHolder holder, int position) {
-            RealmModel galleryItem = mGalleryItems.get(position);
+            Photo galleryItem = mGalleryItems.get(position);
             holder.textView.setText(galleryItem.getTitle());
-            Glide.with(getActivity())
-                    .load(galleryItem.getUrlS())
-                    .into(holder.itemImageView);
+            if(galleryItem.getUrlS() != null){
+                Glide.with(getActivity())
+                        .load(galleryItem.getUrlS())
+                        .into(holder.itemImageView);
+
+            }else{
+                Glide.with(getActivity())
+                        .load("https://farm"+galleryItem.getFarm()+".staticflickr.com/"+galleryItem.getServer()+"/"
+                                +galleryItem.getId()+"_"+galleryItem.getSecret()+"_m.jpg")
+                        .into(holder.itemImageView);
+            }
             holder.itemImageView.setOnClickListener(v -> callbackActivity.onDetailsGalleryOwner(galleryItem.getOwner()));
+            holder.itemImageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    callbackActivity.onPicture("https://farm"+galleryItem.getFarm()
+                            +".staticflickr.com/"+galleryItem.getServer()+"/"
+                            +galleryItem.getId()+"_"+galleryItem.getSecret()+"_c.jpg");
+                    return false;
+                }
+            });
         }
 
         @Override
@@ -120,10 +137,15 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
     }
 
     @Override
-    public void setPhotos(List<RealmModel> galleryItem) {
+    public void setPhotos(List<Photo> galleryItem) {
         if (galleryItem == null) return;
         mItems = galleryItem;
         setupAdapter();
+    }
+
+    @Override
+    public void sendMessage(String s) {
+        Toast.makeText(getActivity(), s+" 111", Toast.LENGTH_SHORT).show();
     }
 
 }

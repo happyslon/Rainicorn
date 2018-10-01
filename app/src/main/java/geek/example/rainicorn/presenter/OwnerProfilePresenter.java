@@ -6,23 +6,16 @@ import com.arellomobile.mvp.MvpPresenter;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-import geek.example.rainicorn.data.models.owner.Owner;
 import geek.example.rainicorn.data.models.owner.profile.OwnerProfile;
 import geek.example.rainicorn.data.rest.NetApiClient;
-import io.reactivex.functions.Consumer;
-
 @InjectViewState
-public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscriber<Owner> {
+public class OwnerProfilePresenter extends MvpPresenter<OwnerProfileView> implements Subscriber<OwnerProfile> {
 
     private String user;
-    @Override
-    public void attachView(OwnerView view) {
-        super.attachView(view);
-        loadDate();
-    }
+
 
     private void loadDate() {
-        NetApiClient.getInstance().getOwner(user)
+        NetApiClient.getInstance().getInfoOwnerProfile(user)
                 .subscribe(this);
     }
 
@@ -32,8 +25,8 @@ public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscribe
     }
 
     @Override
-    public void onNext(Owner owner) {
-        getViewState().setOwnerPhotos(owner.getPhotos().getPhoto());
+    public void onNext(OwnerProfile ownerProfile) {
+        getViewState().setOwnerProfile(ownerProfile);
     }
 
     @Override
@@ -44,6 +37,12 @@ public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscribe
     @Override
     public void onComplete() {
 
+    }
+
+    @Override
+    public void attachView(OwnerProfileView view) {
+        super.attachView(view);
+        loadDate();
     }
 
     public void setUser(String user) {

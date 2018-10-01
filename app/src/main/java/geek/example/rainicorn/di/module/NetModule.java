@@ -1,22 +1,15 @@
 package geek.example.rainicorn.di.module;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import geek.example.rainicorn.data.Endpoints;
+import geek.example.rainicorn.data.rest.ServiceGenerator;
 
 @Module
 public class NetModule {
 //    @Provides
-//    @Singleton
-//    public NetworkInfo providerNetWorkInfo(){
-//        ConnectivityManager connectivityManager =
-//                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//
-//        return connectivityManager.getActiveNetworkInfo();
+//    Endpoints getEndpoins(){
+//        return new ServiceGenerator().createService(Endpoints.class);
 //    }
 }

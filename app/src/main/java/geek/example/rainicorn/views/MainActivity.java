@@ -1,5 +1,6 @@
 package geek.example.rainicorn.views;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,11 +12,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import javax.inject.Inject;
+
+import geek.example.rainicorn.MainApplication;
 import geek.example.rainicorn.R;
+import geek.example.rainicorn.di.component.EventBusComponent;
 import geek.example.rainicorn.presenter.BasePresenter;
 import geek.example.rainicorn.utils.Constants;
+import geek.example.rainicorn.utils.RxEventBus;
+import geek.example.rainicorn.views.picture.PictureFragment;
 import geek.example.rainicorn.views.search.OwnerFragment;
 import geek.example.rainicorn.views.search.SearchFragment;
 
@@ -24,14 +34,29 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,BasePresenter {
 
     Fragment fragment;
+    MaterialSearchView searchView;
+    EventBusComponent eventBusComponent;
+    @Inject
+    RxEventBus rxEventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        eventBusComponent = MainApplication.getEventBusComponent();
+        eventBusComponent.injectMainActivity(this);
+        initGUI();
+
+        placeFragment(SearchFragment.class.getName(),null);
+
+    }
+
+    private void initGUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Rainicorn");
+        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        searchView = (MaterialSearchView)findViewById(R.id.search_view);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -41,9 +66,23 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(query != null && !query.isEmpty()){
+                    rxEventBus.send(query);
+                }
+                return false;
+            }
 
-        placeFragment(SearchFragment.class.getName(),null);
-
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText != null && !newText.isEmpty()){
+                    rxEventBus.send(newText);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -70,6 +109,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
         return true;
     }
 
@@ -81,9 +122,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -117,9 +158,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         fragment = Fragment.instantiate(this, fragmentTag, args);
-        transaction.setCustomAnimations(
-                android.R.anim.fade_in, android.R.anim.fade_out,
-                android.R.anim.fade_out, android.R.anim.fade_in);
+//        transaction.setCustomAnimations(
+//                android.R.anim.fade_in, android.R.anim.fade_out,
+//                android.R.anim.fade_out, android.R.anim.fade_in);
         transaction.replace(R.id.container_fragments, fragment, fragmentTag);
 
         transaction.addToBackStack(SearchFragment.class.getName());
@@ -133,5 +174,12 @@ public class MainActivity extends AppCompatActivity
         bundle.putString(Constants.OWNER_GALLERY,owner);
         placeFragment(OwnerFragment.class.getName(),bundle);
 
+    }
+
+    @Override
+    public void onPicture(String urls) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.PICTURE_URL,urls);
+        placeFragment(PictureFragment.class.getName(),bundle);
     }
 }

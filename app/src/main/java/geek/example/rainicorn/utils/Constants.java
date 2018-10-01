@@ -4,6 +4,8 @@ public interface Constants {
 
     public static final String OWNER_GALLERY = "OWNER_GALLERY";
 
+    public static final String PICTURE_URL = "picture_url";
+
     public static final String EXT_COUNT = "count";
 
     public static final String SAVE_STATE = "SaveInstanceState";
