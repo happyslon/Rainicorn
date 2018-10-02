@@ -10,6 +10,6 @@ import geek.example.rainicorn.views.MainActivity;
 @Singleton
 @Component(modules = {EventBusModule.class})
 public interface EventBusComponent {
-    void injectMainActivity(MainActivity mainActivity);
-    void injectSearchPresenter(SearchPresenter searchPresenter);
+//    void injectMainActivity(MainActivity mainActivity);
+//    void injectSearchPresenter(SearchPresenter searchPresenter);
 }

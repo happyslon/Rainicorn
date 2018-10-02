@@ -35,44 +35,44 @@ import io.reactivex.schedulers.Schedulers;
 
 @InjectViewState
 public class SearchPresenter extends MvpPresenter<SearchView> implements Subscriber<GalleryItem>{
-    EventBusComponent eventBusComponent;
-    CompositeDisposable disposables;
+//    EventBusComponent eventBusComponent;
+//    CompositeDisposable disposables;
 //    DataComponent dataComponent;
 //    @Inject
 //    DataSource dataSource;
-    @Inject
-    RxEventBus rxEventBus;
+//    @Inject
+//    RxEventBus rxEventBus;
     @SuppressLint("CheckResult")
     @Override
     public void attachView(SearchView view) {
 //        dataComponent = MainApplication.getComponent();
 //        dataComponent.dataComponent(this);
-        disposables = new CompositeDisposable();
-        eventBusComponent = MainApplication.getEventBusComponent();
-        eventBusComponent.injectSearchPresenter(this);
-        disposables.add(
-        rxEventBus.getEvents()
-                .subscribeOn(Schedulers.io())
-                .debounce(5L,TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<String>() {
-                    @Override
-                    public void onNext(String s) {
-                        loadDateForText(s);
-//                        getViewState().sendMessage(s);
-                        Log.d("sendMessage",s);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                }));
+//        disposables = new CompositeDisposable();
+//        eventBusComponent = MainApplication.getEventBusComponent();
+//        eventBusComponent.injectSearchPresenter(this);
+//        disposables.add(
+//        rxEventBus.getEvents()
+//                .subscribeOn(Schedulers.io())
+//                .debounce(5L,TimeUnit.SECONDS)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeWith(new DisposableObserver<String>() {
+//                    @Override
+//                    public void onNext(String s) {
+//                        loadDateForText(s);
+////                        getViewState().sendMessage(s);
+//                        Log.d("sendMessage",s);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                }));
 //                .subscribe(new Consumer<String>() {
 //                    @Override
 //                    public void accept(String s) throws Exception {
@@ -90,13 +90,13 @@ public class SearchPresenter extends MvpPresenter<SearchView> implements Subscri
 
     @Override
     public void detachView(SearchView view) {
-        disposables.dispose();
+//        disposables.dispose();
         super.detachView(view);
     }
 
     @Override
     public void onDestroy() {
-        disposables.dispose();
+//        disposables.dispose();
         super.onDestroy();
     }
 

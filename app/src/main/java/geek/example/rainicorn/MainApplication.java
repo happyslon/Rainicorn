@@ -16,7 +16,7 @@ import io.realm.RealmConfiguration;
 public class MainApplication extends Application {
 
     private static DataComponent component;
-    private static EventBusComponent eventBusComponent;
+//    private static EventBusComponent eventBusComponent;
 //    private static NetComponent netComponent;
 
     @Override
@@ -29,18 +29,18 @@ public class MainApplication extends Application {
                 .builder()
                 .dataModule(new DataModule())
                 .build();
-        eventBusComponent = DaggerEventBusComponent
-                .builder()
-                .eventBusModule(new EventBusModule())
-                .build();
+//        eventBusComponent = DaggerEventBusComponent
+//                .builder()
+//                .eventBusModule(new EventBusModule())
+//                .build();
 
 
     }
     public static DataComponent getComponent() {
         return component;
     }
-    public static EventBusComponent getEventBusComponent(){
-        return eventBusComponent;
-    }
+//    public static EventBusComponent getEventBusComponent(){
+//        return eventBusComponent;
+//    }
 
 }

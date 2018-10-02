@@ -35,16 +35,16 @@ public class MainActivity extends AppCompatActivity
 
     Fragment fragment;
     MaterialSearchView searchView;
-    EventBusComponent eventBusComponent;
-    @Inject
-    RxEventBus rxEventBus;
+//    EventBusComponent eventBusComponent;
+//    @Inject
+//    RxEventBus rxEventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        eventBusComponent = MainApplication.getEventBusComponent();
-        eventBusComponent.injectMainActivity(this);
+//        eventBusComponent = MainApplication.getEventBusComponent();
+//        eventBusComponent.injectMainActivity(this);
         initGUI();
 
         placeFragment(SearchFragment.class.getName(),null);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(query != null && !query.isEmpty()){
-                    rxEventBus.send(query);
+//                    rxEventBus.send(query);
                 }
                 return false;
             }
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(newText != null && !newText.isEmpty()){
-                    rxEventBus.send(newText);
+//                    rxEventBus.send(newText);
                 }
                 return false;
             }
