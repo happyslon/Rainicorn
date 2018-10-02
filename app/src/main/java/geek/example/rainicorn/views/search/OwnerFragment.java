@@ -24,6 +24,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import geek.example.rainicorn.R;
 import geek.example.rainicorn.data.models.owner.Photo;

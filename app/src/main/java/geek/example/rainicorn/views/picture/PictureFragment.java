@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.bumptech.glide.request.transition.Transition;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import geek.example.rainicorn.R;
 import geek.example.rainicorn.presenter.PictureView;
 import geek.example.rainicorn.utils.Constants;
@@ -57,7 +59,7 @@ public class PictureFragment extends MvpAppCompatFragment implements PictureView
                         .load(urlPic)
                         .into(new SimpleTarget<Bitmap>() {
                             @Override
-                            public void onResourceReady(Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                                 image.setImageBitmap(resource);
                                 setBackground();
                             }
