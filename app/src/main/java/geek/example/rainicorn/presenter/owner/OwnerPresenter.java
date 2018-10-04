@@ -1,4 +1,4 @@
-package geek.example.rainicorn.presenter;
+package geek.example.rainicorn.presenter.owner;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
@@ -6,23 +6,34 @@ import com.arellomobile.mvp.MvpPresenter;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import javax.inject.Inject;
+
+import geek.example.rainicorn.MainApplication;
 import geek.example.rainicorn.data.models.owner.Owner;
-import geek.example.rainicorn.data.models.owner.profile.OwnerProfile;
 import geek.example.rainicorn.data.rest.NetApiClient;
-import io.reactivex.functions.Consumer;
 
 @InjectViewState
 public class OwnerPresenter extends MvpPresenter<OwnerView> implements Subscriber<Owner> {
 
+    @Inject
+    NetApiClient netApiClient;
+
     private String user;
+
     @Override
     public void attachView(OwnerView view) {
         super.attachView(view);
         loadDate();
     }
 
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
+        MainApplication.getComponent().injectsToOwnerPresenter(this);
+    }
+
     private void loadDate() {
-        NetApiClient.getInstance().getOwner(user)
+        netApiClient.getOwner(user)
                 .subscribe(this);
     }
 

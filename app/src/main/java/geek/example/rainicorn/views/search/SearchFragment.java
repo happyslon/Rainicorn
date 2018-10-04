@@ -7,9 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,13 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import geek.example.rainicorn.R;
-import geek.example.rainicorn.data.models.RealmModel;
 import geek.example.rainicorn.data.models.gallery.Photo;
 import geek.example.rainicorn.presenter.BasePresenter;
-import geek.example.rainicorn.presenter.SearchPresenter;
-import geek.example.rainicorn.presenter.SearchView;
+import geek.example.rainicorn.presenter.search.SearchPresenter;
+import geek.example.rainicorn.presenter.search.SearcherView;
 
-public class SearchFragment extends MvpAppCompatFragment implements SearchView {
+
+public class SearchFragment extends MvpAppCompatFragment implements SearcherView,
+        SearchView.OnQueryTextListener,
+        MenuItem.OnActionExpandListener {
 
     @InjectPresenter
     SearchPresenter searchPresenter;
@@ -36,6 +42,14 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
 
     private RecyclerView photoRecyclerView;
     private List<Photo> mItems = new ArrayList<>();
+    private Context mContext;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = getActivity();
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -48,7 +62,7 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search, container, false);
         photoRecyclerView = v.findViewById(R.id.photo_gallery_recycler_view);
-        photoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),3));
+        photoRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         setupAdapter();
         return v;
     }
@@ -58,9 +72,46 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setQueryHint("Search");
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     private void setupAdapter() {
         photoRecyclerView.setAdapter(new PhotoAdapter(mItems));
     }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public boolean onMenuItemActionCollapse(MenuItem item) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query != null && !query.isEmpty()) {
+            searchPresenter.loadDateForText(query);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText != null && !newText.isEmpty()) {
+            searchPresenter.loadDateForText(newText);
+        }
+        return false;
+    }
+
 
     private class PhotoHolder extends RecyclerView.ViewHolder {
         private TextView textView;
@@ -93,26 +144,23 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
         public void onBindViewHolder(@NonNull PhotoHolder holder, int position) {
             Photo galleryItem = mGalleryItems.get(position);
             holder.textView.setText(galleryItem.getTitle());
-            if(galleryItem.getUrlS() != null){
+            if (galleryItem.getUrlS() != null) {
                 Glide.with(getActivity())
                         .load(galleryItem.getUrlS())
                         .into(holder.itemImageView);
 
-            }else{
+            } else {
                 Glide.with(getActivity())
-                        .load("https://farm"+galleryItem.getFarm()+".staticflickr.com/"+galleryItem.getServer()+"/"
-                                +galleryItem.getId()+"_"+galleryItem.getSecret()+"_m.jpg")
+                        .load("https://farm" + galleryItem.getFarm() + ".staticflickr.com/" + galleryItem.getServer() + "/"
+                                + galleryItem.getId() + "_" + galleryItem.getSecret() + "_m.jpg")
                         .into(holder.itemImageView);
             }
             holder.itemImageView.setOnClickListener(v -> callbackActivity.onDetailsGalleryOwner(galleryItem.getOwner()));
-            holder.itemImageView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    callbackActivity.onPicture("https://farm"+galleryItem.getFarm()
-                            +".staticflickr.com/"+galleryItem.getServer()+"/"
-                            +galleryItem.getId()+"_"+galleryItem.getSecret()+"_c.jpg");
-                    return false;
-                }
+            holder.itemImageView.setOnLongClickListener(v -> {
+                callbackActivity.onPicture("https://farm" + galleryItem.getFarm()
+                        + ".staticflickr.com/" + galleryItem.getServer() + "/"
+                        + galleryItem.getId() + "_" + galleryItem.getSecret() + "_c.jpg");
+                return false;
             });
         }
 
@@ -141,11 +189,6 @@ public class SearchFragment extends MvpAppCompatFragment implements SearchView {
         if (galleryItem == null) return;
         mItems = galleryItem;
         setupAdapter();
-    }
-
-    @Override
-    public void sendMessage(String s) {
-        Toast.makeText(getActivity(), s+" 111", Toast.LENGTH_SHORT).show();
     }
 
 }
