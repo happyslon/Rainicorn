@@ -8,7 +8,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import geek.example.rainicorn.MainApplication;
-import geek.example.rainicorn.data.Endpoints;
 import geek.example.rainicorn.data.database.realm.RealmHelper;
 import geek.example.rainicorn.data.models.RealmModel;
 import geek.example.rainicorn.data.models.gallery.GalleryItem;
@@ -16,7 +15,6 @@ import geek.example.rainicorn.data.models.gallery.Photo;
 import geek.example.rainicorn.data.rest.NetApiClient;
 import io.reactivex.Completable;
 import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
