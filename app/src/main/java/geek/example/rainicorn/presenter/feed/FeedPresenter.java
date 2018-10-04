@@ -1,24 +1,19 @@
 package geek.example.rainicorn.presenter.feed;
 
-import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 
 import geek.example.rainicorn.data.database.realm.usecases.FeedUsecases;
 import geek.example.rainicorn.data.models.RealmModel;
 import geek.example.rainicorn.data.models.view.FeedViewModel;
-import io.reactivex.observers.DisposableCompletableObserver;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 @InjectViewState
-public class FeedPresenter extends MvpPresenter<FeedView>{
+public class FeedPresenter extends MvpPresenter<FeedView> {
     Realm realm;
 
     @Override
@@ -40,21 +35,8 @@ public class FeedPresenter extends MvpPresenter<FeedView>{
         realm.close();
     }
 
-
-    @SuppressLint("CheckResult")
     private void update() {
-        new FeedUsecases().getFeed()
-                .subscribeWith(new DisposableCompletableObserver() {
-            @Override
-            public void onComplete() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                getViewState().showError(e);
-            }
-        });
+        new FeedUsecases();
     }
 
     private void setData() {
