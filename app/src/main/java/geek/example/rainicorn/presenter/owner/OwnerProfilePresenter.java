@@ -1,6 +1,5 @@
 package geek.example.rainicorn.presenter.owner;
 
-import android.util.Log;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
