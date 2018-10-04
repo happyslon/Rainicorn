@@ -16,6 +16,7 @@ import geek.example.rainicorn.data.rest.NetApiClient;
 import io.reactivex.Completable;
 import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
@@ -29,8 +30,8 @@ public class FeedUsecases implements Subscriber<GalleryItem>{
         netApiClient.getGallery().subscribe(this);
     }
 
-    public Completable getFeed() {
-        return Completable.create((CompletableOnSubscribe) emitter -> {
+    public void getFeed() {
+        Completable.create((CompletableOnSubscribe) emitter -> {
             try {
                 Realm realm = RealmHelper.newRealmInstance();
                 for (Photo curItem : modelList) {
@@ -53,7 +54,18 @@ public class FeedUsecases implements Subscriber<GalleryItem>{
                 emitter.onError(e);
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     @Override
@@ -64,6 +76,7 @@ public class FeedUsecases implements Subscriber<GalleryItem>{
     @Override
     public void onNext(GalleryItem galleryItem) {
         modelList = galleryItem.getPhotos().getPhoto();
+        getFeed();
     }
 
     @Override
