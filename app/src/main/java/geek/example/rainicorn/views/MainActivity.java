@@ -17,7 +17,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import geek.example.rainicorn.R;
 import geek.example.rainicorn.presenter.BasePresenter;
+import geek.example.rainicorn.presenter.feed.FeedPresenter;
 import geek.example.rainicorn.utils.Constants;
+import geek.example.rainicorn.views.feed.FeedFragment;
 import geek.example.rainicorn.views.owner.OwnerFragment;
 import geek.example.rainicorn.views.picture.PictureFragment;
 import geek.example.rainicorn.views.search.SearchFragment;
@@ -110,8 +112,10 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_feed) {
+            placeFragment(FeedFragment.class.getName(), null);
+        }else if(id == R.id.nav_search){
+            placeFragment(SearchFragment.class.getName(), null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

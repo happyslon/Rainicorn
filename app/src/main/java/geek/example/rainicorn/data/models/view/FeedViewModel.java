@@ -1,24 +1,26 @@
-package geek.example.rainicorn.data.models;
-
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package geek.example.rainicorn.data.models.view;
 
 import javax.annotation.Nullable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import geek.example.rainicorn.data.models.RealmModel;
 
-
-public class RealmModel extends RealmObject{
+public class FeedViewModel {
 
     public String id;
-
     public String owner;
-
     public String title;
-
     public String urlS;
+
+    public FeedViewModel(String id, String owner, String title, String urlS) {
+        this.id = id;
+        this.owner = owner;
+        this.title = title;
+        this.urlS = urlS;
+    }
+
+    public FeedViewModel(RealmModel model) {
+        this(model.id, model.owner, model.title, model.urlS);
+    }
 
     public String getId() {
         return id;
