@@ -1,6 +1,5 @@
 package geek.example.rainicorn.presenter.feed;
 
-import android.annotation.SuppressLint;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
