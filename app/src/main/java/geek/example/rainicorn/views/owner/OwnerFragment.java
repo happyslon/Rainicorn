@@ -1,13 +1,11 @@
-package geek.example.rainicorn.views.search;
+package geek.example.rainicorn.views.owner;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 
 import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -30,14 +27,15 @@ import geek.example.rainicorn.data.models.owner.Photo;
 import geek.example.rainicorn.data.models.owner.profile.OwnerProfile;
 import geek.example.rainicorn.data.models.owner.profile.Person;
 import geek.example.rainicorn.presenter.BasePresenter;
-import geek.example.rainicorn.presenter.OwnerPresenter;
-import geek.example.rainicorn.presenter.OwnerProfilePresenter;
-import geek.example.rainicorn.presenter.OwnerProfileView;
-import geek.example.rainicorn.presenter.OwnerView;
+
+import geek.example.rainicorn.presenter.owner.OwnerPresenter;
+import geek.example.rainicorn.presenter.owner.OwnerProfilePresenter;
+import geek.example.rainicorn.presenter.owner.OwnerProfileView;
+import geek.example.rainicorn.presenter.owner.OwnerView;
 import geek.example.rainicorn.utils.Constants;
 
 
-public class OwnerFragment extends MvpAppCompatFragment implements OwnerView,OwnerProfileView{
+public class OwnerFragment extends MvpAppCompatFragment implements OwnerView,OwnerProfileView {
     @InjectPresenter
     OwnerPresenter ownerPresenter;
     @InjectPresenter
@@ -170,11 +168,8 @@ public class OwnerFragment extends MvpAppCompatFragment implements OwnerView,Own
         }
 
         if(person.getUsername() != null) userName.setText(person.getUsername().getContent());
-
         if(person.getRealname() != null) realName.setText(person.getRealname().getContent());
-
         if(person.getPhotos().getFirstdatetaken() != null) fistDate.setText(person.getPhotos().getFirstdatetaken().getContent());
-
         if(person.getDescription() != null) description.setText(person.getDescription().getContent());
 
     }
@@ -183,3 +178,4 @@ public class OwnerFragment extends MvpAppCompatFragment implements OwnerView,Own
     }
 
 }
+

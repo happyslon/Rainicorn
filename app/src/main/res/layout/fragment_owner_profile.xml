@@ -11,12 +11,9 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/fragment_horizontal_margin"
                 android:layout_marginTop="@dimen/fragment_horizontal_margin"/>
         <LinearLayout
@@ -41,14 +38,14 @@
                     android:id="@+id/text_realname"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:lines="1"/>
                 <TextView
                     android:id="@+id/text_fist_date"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:textSize="8sp"
+                    android:textSize="12sp"
                     android:lines="1"/>
 
             </LinearLayout>
@@ -62,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:lines="3"
-                    android:textSize="6sp"/>
+                    android:textSize="12sp"/>
             </LinearLayout>
         </LinearLayout>
         </LinearLayout>
