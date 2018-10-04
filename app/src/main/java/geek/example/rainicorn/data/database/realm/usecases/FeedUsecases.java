@@ -1,5 +1,7 @@
 package geek.example.rainicorn.data.database.realm.usecases;
 
+import android.annotation.SuppressLint;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -30,6 +32,7 @@ public class FeedUsecases implements Subscriber<GalleryItem>{
         netApiClient.getGallery().subscribe(this);
     }
 
+    @SuppressLint("CheckResult")
     public void getFeed() {
         Completable.create((CompletableOnSubscribe) emitter -> {
             try {

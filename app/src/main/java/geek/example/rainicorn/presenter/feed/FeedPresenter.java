@@ -13,7 +13,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 @InjectViewState
-public class FeedPresenter extends MvpPresenter<FeedView>{
+public class FeedPresenter extends MvpPresenter<FeedView> {
     Realm realm;
 
     @Override
