@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import java.util.ArrayList;
 
+import geek.example.rainicorn.data.database.realm.RealmHelper;
 import geek.example.rainicorn.data.database.realm.usecases.FeedUsecases;
 import geek.example.rainicorn.data.models.RealmModel;
 import geek.example.rainicorn.data.models.view.FeedViewModel;
