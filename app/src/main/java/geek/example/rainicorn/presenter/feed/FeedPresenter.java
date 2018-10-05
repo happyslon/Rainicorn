@@ -19,7 +19,7 @@ public class FeedPresenter extends MvpPresenter<FeedView> {
     @Override
     protected void onFirstViewAttach() {
         super.onFirstViewAttach();
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.newRealmInstance();
         update();
     }
 
